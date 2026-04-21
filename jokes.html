@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Dokument</title>
+        <meta charset="UTF-8">
+        <style>
+            #joke {
+                white-space: preserve-spaces;
+                border: 1px solid blue;
+            }
+        </style>
+    </head>
+    <body>
+        <p>Klicka på knappen för att hämta lite data</p>
+        <button onclick="getJokes()">Hämta</button>
+        <button onclick="getJokesAgain()">Skämta</button>
+        <div id="joke">Här hamnar svaret</div>
+        <p id="pun"></p>
+    </body>
+    <script>
+        function getJokes() {
+            fetch("https://v2.jokeapi.dev/joke/Any")
+                    .then(response => {
+                        if (response.ok) {
+                            return response.json()
+                        } else {
+                            throw response.statusText
+                        }
+                    })
+                    .then(data => {
+                        document.getElementById('joke').innerText = JSON.stringify(data)
+                        document.getElementById('pun').innerText = data.joke
+                    })
+                    .catch(error => {
+                        console.error(error)
+                    })
+        }
+
+        async function getJokesAgain() {
+            let svar = await fetch("https://v2.jokeapi.dev/joke/Any")
+            let data = await svar.json()
+            document.getElementById('joke').innerText = JSON.stringify(data)
+        }
+    </script>
+</html>
